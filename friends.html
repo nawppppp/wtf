@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>https://tepa.wtf | friends</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #000000;
+    color: #d8d8d8;
+    font-family: Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12px;
+    height: 100%;
+  }
+  a { color: #6fa8dc; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  header {
+    background: linear-gradient(to bottom, #5c1010 0%, #3d0a0a 100%);
+    border-bottom: 1px solid #200404;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 5;
+  }
+  .logo {
+    font-size: 26px;
+    font-weight: bold;
+    color: #f2e6e6;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    letter-spacing: -1px;
+    margin-right: 30px;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
+  .nav-links {
+    display: flex;
+    gap: 22px;
+  }
+  .nav-links a {
+    color: #f2e6e6;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .nav-links a.active {
+    color: #ffffff;
+    border-bottom: 2px solid #ffffff;
+    padding-bottom: 4px;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .header-right a {
+    color: #e8caca;
+    font-size: 12px;
+  }
+  .search-box {
+    display: flex;
+  }
+  .search-box input {
+    width: 130px;
+    padding: 4px 6px;
+    border: 1px solid #200404;
+    background: #2a2a2a;
+    color: #ddd;
+    font-size: 12px;
+  }
+  .search-box button {
+    background: #7a1a1a;
+    border: 1px solid #200404;
+    color: #fff;
+    padding: 4px 8px;
+    cursor: pointer;
+  }
+
+  /* ===== bg ===== */
+  .stage {
+    background: #000000;
+    min-height: calc(100vh - 53px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ===== window ===== */
+  .window {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 620px;
+    max-width: 92vw;
+    background: #161616;
+    border: 1px solid #3d0a0a;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.85), 0 0 0 1px #000;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .window-titlebar {
+    background: linear-gradient(to bottom, #7a1a1a 0%, #3d0a0a 100%);
+    padding: 10px 14px;
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    border-bottom: 1px solid #200404;
+  }
+  .window-titlebar:active { cursor: grabbing; }
+  .window-titlebar h2 {
+    margin: 0;
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
+  }
+  .window-dots {
+    display: flex;
+    gap: 6px;
+  }
+  .window-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    background: #451212;
+    border: 1px solid #200404;
+  }
+
+  .window-body {
+    padding: 14px 16px;
+    background: #161616;
+  }
+
+  .list-name-input {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 14px;
+    background: #1f1f1f;
+    border: 1px solid #444;
+    color: #eaeaea;
+    border-radius: 3px;
+    margin-bottom: 12px;
+  }
+  .list-name-input:focus {
+    outline: none;
+    border-color: #a83232;
+    box-shadow: 0 0 0 2px rgba(168,50,50,0.3);
+  }
+
+  .window-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .filter-tabs {
+    display: flex;
+    gap: 14px;
+    font-size: 13px;
+  }
+  .filter-tabs span {
+    color: #999;
+    cursor: pointer;
+  }
+  .filter-tabs span.active {
+    color: #eaeaea;
+    font-weight: bold;
+    border-bottom: 2px solid #a83232;
+    padding-bottom: 2px;
+  }
+  .mini-search {
+    display: flex;
+    align-items: center;
+    background: #1f1f1f;
+    border: 1px solid #444;
+    border-radius: 3px;
+    padding: 4px 8px;
+    flex-grow: 1;
+    max-width: 220px;
+  }
+  .mini-search input {
+    background: transparent;
+    border: none;
+    color: #ddd;
+    font-size: 12px;
+    outline: none;
+    width: 100%;
+  }
+  .mini-search .icon { color: #777; margin-right: 6px; }
+
+  .friends-scroll {
+    max-height: 340px;
+    overflow-y: auto;
+    border-top: 1px solid #2a2a2a;
+    border-bottom: 1px solid #2a2a2a;
+    padding: 10px 4px;
+  }
+  .friends-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .friend-card {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: inherit;
+  }
+  .friend-card:hover {
+    background: #232323;
+    text-decoration: none;
+  }
+  .friend-card img {
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    border: 1px solid #333;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .friend-info { min-width: 0; }
+  .friend-name {
+    color: #dcdcdc;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .friend-promo {
+    color: #b5822f;
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .window-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 12px;
+  }
+  .btn-primary {
+    background: linear-gradient(to bottom, #a83232, #6e1e1e);
+    border: 1px solid #200404;
+    color: #fff;
+    padding: 7px 16px;
+    font-weight: bold;
+    font-size: 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .btn-secondary {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    color: #ccc;
+    padding: 7px 16px;
+    font-size: 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .btn-secondary:hover {
+    color: #eee;
+    text-decoration: none;
+  }
+
+  /* scrollabr */
+  .friends-scroll::-webkit-scrollbar { width: 8px; }
+  .friends-scroll::-webkit-scrollbar-track { background: #161616; }
+  .friends-scroll::-webkit-scrollbar-thumb { background: #4a1414; border-radius: 4px; }
+
+  /* ===== mobile shit ===== */
+  @media (max-width: 700px) {
+    .friends-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    header {
+      flex-wrap: wrap;
+      padding: 8px 10px;
+      gap: 8px;
+    }
+    .header-left {
+      width: 100%;
+      justify-content: space-between;
+    }
+    .logo { font-size: 20px; margin-right: 0; }
+    .nav-links { gap: 12px; }
+    .nav-links a { font-size: 12px; }
+    .header-right {
+      width: 100%;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .search-box input { width: 90px; }
+
+    .window {
+      width: 94vw;
+      max-width: 94vw;
+      top: 20px;
+    }
+    .window-titlebar h2 { font-size: 14px; }
+    .window-body { padding: 10px; }
+    .friends-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .friend-card img { width: 36px; height: 36px; }
+    .friend-name, .friend-promo { font-size: 10.5px; }
+    .friends-scroll { max-height: 300px; }
+    .filter-tabs { font-size: 12px; gap: 10px; }
+    .mini-search { max-width: 140px; }
+    .window-footer { flex-wrap: wrap; }
+    .btn-primary, .btn-secondary { flex-grow: 1; text-align: center; }
+  }
+
+  @media (max-width: 400px) {
+    .friends-grid { grid-template-columns: repeat(1, 1fr); }
+    .window { top: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="logo">facebook</div>
+    <nav class="nav-links">
+      <a href="https://tepa.wtf">Home</a>
+      <a href="https://tepa.wtf">Profile</a>
+      <a href="https://tepa.wtf/friends" class="active">Friends</a>
+      <a href="#">Inbox</a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <a href="https://tepa.wtf">Tepa</a>
+    <a href="#">Settings</a>
+    <a href="https://facebook.com">Logout</a>
+    <div class="search-box">
+      <input type="text" placeholder="Search">
+      <button>🔍</button>
+    </div>
+  </div>
+</header>
+
+<div class="stage" id="stage">
+  <div class="window" id="friendsWindow">
+    <div class="window-titlebar" id="titlebar">
+      <h2>tepawtf's friends</h2>
+      <div class="window-dots">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="window-body">
+      <input class="list-name-input" type="text" value="" placeholder="">
+
+      <div class="window-toolbar">
+        <div class="filter-tabs">
+          <span class="active">All</span>
+          <span>Selected (0)</span>
+        </div>
+        <div class="mini-search">
+          <span class="icon">🔍</span>
+          <input type="text" placeholder="search bar that dont work">
+        </div>
+      </div>
+
+      <div class="friends-scroll">
+        <div class="friends-grid" id="friendsGrid">
+
+
+          <a class="friend-card" href="https://soundcloud.com/3qrbbb">
+            <img src="https://i1.sndcdn.com/avatars-IYUircYI3bTlDI6J-8nGKAQ-t1080x1080.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">3qrb</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/aeter">
+            <img src="https://i1.sndcdn.com/avatars-zE3NcNHf88wP9E5Z-z13xiw-t1080x1080.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">aeter</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/morgue">
+            <img src="https://i.ibb.co/wNm4Wr4p/729211928-18082925477646579-5948934149893223965-n.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">morgue</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/imsg">
+            <img src="https://i.ibb.co/HLF9NVJh/722858281-17958006549130336-8004755605705762219-n.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">imsg</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/angelsarchive">
+            <img src="https://i1.sndcdn.com/avatars-LzhLuPObIaxP8lfj-TrLeuw-t1080x1080.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">Isu</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+<a class="friend-card" href="https://www.instagram.com/gatecode0/">
+            <img src="https://scontent-iad6-1.cdninstagram.com/v/t51.82787-19/735608845_18052603550685442_9141540653907565017_n.jpg?_nc_cat=106&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy41NjIuQzIifQ%3D%3D&_nc_ohc=Zo3ocV-yZHkQ7kNvwEAYJ_N&_nc_oc=AdrZQcb3oVi9PT0l8PawzNDtEvRqPe0U5YEE69yXd2dtOsfVJhSrTeK8SrQyru4ps9Y&_nc_zt=24&_nc_ht=scontent-iad6-1.cdninstagram.com&_nc_gid=kHc_2G2x0irPodO-AeMNKg&_nc_ss=7b6a8&oh=00_AQD-ZPwumBvyRfcQ7M0U7rLzi5HruFfJP1fBuGxivhtwng&oe=6A5FAEE4" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">jordy</div>
+              <div class="friend-promo">Instagram</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/ash58gotohell">
+            <img src="https://i1.sndcdn.com/avatars-MpkljNvTNuWgqpLG-qPkYRQ-t1080x1080.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">ash58</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/ripidols">
+            <img src="https://i1.sndcdn.com/avatars-BqzxX4AFSOhN7OZB-TBPtZw-t1080x1080.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">ripidols</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/pinkblxxd">
+            <img src="https://i1.sndcdn.com/avatars-dXIpXpYbdeh5ZUDC-R9lAEA-t1080x1080.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">pinkblxxd</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/iromokikih">
+            <img src="https://scontent-iad6-1.cdninstagram.com/v/t51.82787-19/722447481_17862925113649958_6982040446839502028_n.jpg?_nc_cat=106&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4yNTAuQzIifQ%3D%3D&_nc_ohc=cIXeBi5M6IQQ7kNvwHL5qh_&_nc_oc=Ado3BU8v_KckxkbMSu18WMREYQX-d47O9UuxdXjMKIt0JIyEYljYW9RbQvJ-fhjZlPI&_nc_zt=24&_nc_ht=scontent-iad6-1.cdninstagram.com&_nc_gid=cTkj8fqGS-V9zvrap7beIw&_nc_ss=7b6a8&oh=00_AQA1jxHyH2gOmc4sta3clTHci7qklFmBIBO2v9EZ_KL50A&oe=6A5FBA81" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">iromokikih</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/backw666s">
+            <img src="https://i1.sndcdn.com/avatars-qztB8SkeaWTv6ONJ-8iPC4g-t1080x1080.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">backw666s</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/juliezwuq">
+            <img src="https://i1.sndcdn.com/avatars-3IKbruK0hhzYkPqy-QxPTtQ-t1080x1080.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">julie</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/drugfact">
+            <img src="https://i1.sndcdn.com/avatars-KzpecbzbVnzPy1td-CiQJ9Q-t1080x1080.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">drugfact</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/psychemodel">
+            <img src="https://i1.sndcdn.com/avatars-ByyldS9lQAjB9lkz-WYl0vg-t1080x1080.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">psychemodel</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/xxyymmtt">
+            <img src="https://i1.sndcdn.com/avatars-a85yLioNp2HUWy6n-ReQaAQ-t1080x1080.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">xxyymmtt</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/fnnmilitia">
+            <img src="https://i1.sndcdn.com/avatars-L9aiKxMF9yLx506k-VwQwyQ-t1080x1080.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">fnnmilitia</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/cylisq">
+            <img src="https://i1.sndcdn.com/avatars-zujGdJ9w2ybDX7Bp-LU7rgg-t1080x1080.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">cylis</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://www.instagram.com/cheftxt/">
+            <img src="https://scontent-iad3-1.cdninstagram.com/v/t51.82787-19/748931063_18370269928228423_6790594191261187547_n.jpg?_nc_cat=108&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy41NDguQzIifQ%3D%3D&_nc_ohc=qDZP61aBPFoQ7kNvwHYIs66&_nc_oc=AdobvdiUZIXc6qprQy8y8AAT43RVeLyB9nZBG7I5Fk482WY227HHieAei7TsD9j9T9A&_nc_zt=24&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_gid=-ApbKNX0QggagyAta4XHGw&_nc_ss=7b6a8&oh=00_AQBOagfxcnfUIq94VeYOBHJSSxAcm94crl00U5s-h9pR9w&oe=6A5FD294" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">chef</div>
+              <div class="friend-promo">Instagram</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/kqhw">
+            <img src="https://scontent-iad3-1.cdninstagram.com/v/t51.89012-19/573323465_1219825463302212_7278921664109726296_n.jpg?stp=dst-jpg_tt6&_nc_cat=1&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy5DMiJ9&_nc_ohc=l7ChIGpa0oAQ7kNvwES63QO&_nc_oc=AdrHCU3iz9E22uMoZRETtIES_bNPuGpACRbn2lS7x1ghX_7WJ_FZOT9qg0UAUnA_CBo&_nc_zt=24&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_gid=PEcmHVAwtdEKq44ueK-acg&_nc_ss=7b6a8&oh=00_AQB1eMDY1lL4LiYqm2ljYik8O5-39TFqY4j6iSt9jvJJ_Q&oe=6A5FA662" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">kqhw</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/blss">
+            <img src="https://i1.sndcdn.com/avatars-9Wr0Gm13e91JQwnb-eoFhMw-t1080x1080.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">blss</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+
+          <a class="friend-card" href="https://soundcloud.com/atofault">
+            <img src="https://i1.sndcdn.com/avatars-pCiLvyvQ6mPVbjdf-53kd9Q-t1080x1080.jpg" alt="friend">
+            <div class="friend-info">
+              <div class="friend-name">ato</div>
+              <div class="friend-promo">SoundCloud</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="window-footer">
+        <a class="btn-secondary" href="https://tepa.wtf">Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== dragging stuff =====
+  const win = document.getElementById('friendsWindow');
+  const titlebar = document.getElementById('titlebar');
+  const stage = document.getElementById('stage');
+
+  let isDragging = false;
+  let startX, startY, startLeft, startTop;
+
+  function beginDrag(clientX, clientY) {
+    const rect = win.getBoundingClientRect();
+    const stageRect = stage.getBoundingClientRect();
+    win.style.left = (rect.left - stageRect.left) + 'px';
+    win.style.top = (rect.top - stageRect.top) + 'px';
+    win.style.transform = 'none';
+
+    isDragging = true;
+    startX = clientX;
+    startY = clientY;
+    startLeft = rect.left - stageRect.left;
+    startTop = rect.top - stageRect.top;
+  }
+
+  function moveDrag(clientX, clientY) {
+    if (!isDragging) return;
+    const dx = clientX - startX;
+    const dy = clientY - startY;
+    let newLeft = startLeft + dx;
+    let newTop = startTop + dy;
+
+    const stageRect = stage.getBoundingClientRect();
+    const winRect = win.getBoundingClientRect();
+    const maxLeft = stageRect.width - winRect.width;
+    const maxTop = stageRect.height - winRect.height;
+
+    newLeft = Math.max(0, Math.min(newLeft, Math.max(0, maxLeft)));
+    newTop = Math.max(0, Math.min(newTop, Math.max(0, maxTop)));
+
+    win.style.left = newLeft + 'px';
+    win.style.top = newTop + 'px';
+  }
+
+  function endDrag() {
+    isDragging = false;
+  }
+
+  titlebar.addEventListener('mousedown', (e) => {
+    beginDrag(e.clientX, e.clientY);
+    e.preventDefault();
+  });
+  window.addEventListener('mousemove', (e) => moveDrag(e.clientX, e.clientY));
+  window.addEventListener('mouseup', endDrag);
+
+  titlebar.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    beginDrag(t.clientX, t.clientY);
+  }, { passive: true });
+  window.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const t = e.touches[0];
+    moveDrag(t.clientX, t.clientY);
+  }, { passive: true });
+  window.addEventListener('touchend', endDrag);
+</script>
+
+</body>
+</html>

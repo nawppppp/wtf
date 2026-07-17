@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="" />
+  <meta property="og:description" content="A short description of your page." />
+  <meta property="og:image" content="https://yoursite.com/path/to/image.png" />
+  <meta property="og:url" content="https://yoursite.com" />
+  <meta name="theme-color" content="#ff69b4" />
+<title>https://tepa.wtf</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0;
+    background: #121212;
+    color: #d8d8d8;
+    font-family: Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12px;
+  }
+  a { color: #6fa8dc; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+
+  header {
+    background: linear-gradient(to bottom, #5c1010 0%, #3d0a0a 100%);
+    border-bottom: 1px solid #200404;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-size: 26px;
+    font-weight: bold;
+    color: #f2e6e6;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    letter-spacing: -1px;
+    margin-right: 30px;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
+  .nav-links {
+    display: flex;
+    gap: 22px;
+  }
+  .nav-links a {
+    color: #f2e6e6;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .nav-links a.active {
+    color: #ffffff;
+    border-bottom: 2px solid #ffffff;
+    padding-bottom: 4px;
+  }
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .header-right a {
+    color: #e8caca;
+    font-size: 12px;
+  }
+  .search-box {
+    display: flex;
+  }
+  .search-box input {
+    width: 130px;
+    padding: 4px 6px;
+    border: 1px solid #200404;
+    background: #2a2a2a;
+    color: #ddd;
+    font-size: 12px;
+  }
+  .search-box button {
+    background: #7a1a1a;
+    border: 1px solid #200404;
+    color: #fff;
+    padding: 4px 8px;
+    cursor: pointer;
+  }
+
+  /* ===== layout ===== */
+  .page-title {
+    background: #1a1a1a;
+    border-bottom: 1px solid #2e2e2e;
+    padding: 14px 20px 10px 20px;
+  }
+  .page-title h1 {
+    display: inline;
+    font-size: 20px;
+    color: #eaeaea;
+    margin: 0;
+  }
+  .page-title .status {
+    color: #a8a8a8;
+    font-size: 14px;
+  }
+  .page-title .status-date {
+    color: #777;
+    font-size: 11px;
+  }
+
+  .tabs {
+    background: #1a1a1a;
+    padding: 0 20px;
+    display: flex;
+    gap: 2px;
+    border-bottom: 1px solid #2e2e2e;
+  }
+  .tabs a {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #232323;
+    color: #cfcfcf;
+    font-weight: bold;
+    font-size: 13px;
+    border: 1px solid #2e2e2e;
+    border-bottom: none;
+  }
+  .tabs a.active {
+    background: #2e2e2e;
+    color: #fff;
+  }
+
+  .container {
+    display: flex;
+    max-width: 2000px;
+    padding: 20px;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  /* ===== left sidebarffffff ===== */
+  .sidebar-left {
+    width: 220px;
+    flex-shrink: 0;
+  }
+  .profile-pic-wrap {
+    width: 200px;
+    margin-bottom: 12px;
+  }
+  .profile-pic {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border: 4px solid #1a1a1a;
+    transform: rotate(-6deg);
+    box-shadow: 10px 10px 18px rgba(122, 26, 26, 0.65);
+    display: block;
+  }
+  .sidebar-links {
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    padding: 8px 10px;
+    margin-bottom: 14px;
+  }
+  .sidebar-links a {
+    display: block;
+    padding: 4px 0;
+    font-size: 12px;
+    border-bottom: 1px solid #262626;
+  }
+  .sidebar-links a:last-child { border-bottom: none; }
+
+  .status-box {
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    padding: 10px;
+    font-style: italic;
+    color: #b5b5b5;
+    margin-bottom: 14px;
+  }
+
+  .box {
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    margin-bottom: 14px;
+  }
+  .box-title {
+    background: #242424;
+    color: #eaeaea;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 8px 10px;
+    border-bottom: 1px solid #2e2e2e;
+  }
+  .box-content {
+    padding: 10px;
+    line-height: 1.6;
+  }
+  .box-content .label { color: #888; }
+  .box-content .value { color: #ddd; margin-bottom: 8px; }
+
+  .mutual-friends-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 10px;
+  }
+  .mutual-friends-grid img {
+    width: 100%;
+    height: 60px;
+    object-fit: cover;
+    border: 1px solid #333;
+  }
+  .mutual-friends-grid .fname {
+    font-size: 10px;
+    color: #bbb;
+    text-align: center;
+    margin-top: 2px;
+  }
+
+  /* ===== main feed ===== */
+  .feed {
+    flex-grow: 1;
+    min-width: 480px;
+    max-width: 620px;
+  }
+  .toolbar {
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    padding: 8px 10px;
+    display: flex;
+    gap: 18px;
+    margin-bottom: 4px;
+  }
+  .toolbar span {
+    color: #cfcfcf;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+  }
+  .toolbar .write-active {
+    background: #2e2e2e;
+    padding: 4px 8px;
+    border-radius: 3px;
+  }
+
+  .write-box {
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    border-top: none;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  .write-box textarea {
+    width: 100%;
+    height: 45px;
+    background: #232323;
+    border: 1px solid #333;
+    color: #ddd;
+    padding: 6px;
+    font-family: inherit;
+    resize: vertical;
+  }
+  .write-box .post-btn {
+    text-align: right;
+    margin-top: 6px;
+  }
+  .write-box button {
+    background: linear-gradient(to bottom, #7a1a1a, #5c1010);
+    border: 1px solid #200404;
+    color: #fff;
+    padding: 5px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+
+  .filter-bar {
+    text-align: center;
+    padding: 8px 0;
+    font-size: 12px;
+  }
+  .filter-bar a, .filter-bar span {
+    margin: 0 8px;
+    color: #999;
+  }
+  .filter-bar .active {
+    background: #3d0a0a;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 8px;
+  }
+
+  .day-label {
+    color: #888;
+    font-size: 12px;
+    margin: 14px 0 6px 0;
+    border-bottom: 1px solid #2e2e2e;
+    padding-bottom: 4px;
+  }
+
+  .post {
+    display: flex;
+    gap: 8px;
+    padding: 10px 0;
+    border-bottom: 1px solid #232323;
+  }
+  .post-icon {
+    width: 18px;
+    flex-shrink: 0;
+    text-align: center;
+    font-size: 15px;
+  }
+  .post-body { flex-grow: 1; }
+  .post-text {
+    color: #d8d8d8;
+    font-size: 13px;
+  }
+  .post-text.bold-title {
+    font-weight: bold;
+    font-size: 14px;
+    color: #eaeaea;
+  }
+  .post-time {
+    color: #777;
+    font-size: 11px;
+  }
+  .post-actions {
+    font-size: 11px;
+    color: #888;
+    margin-top: 4px;
+  }
+  .post-actions a { color: #7fa9d6; margin-right: 4px; }
+
+  .quote-block {
+    background: #1e1e1e;
+    border: 1px solid #2e2e2e;
+    padding: 12px;
+    margin: 8px 0;
+    text-align: center;
+  }
+  .quote-block .quote-text {
+    font-style: italic;
+    color: #cfcfcf;
+    font-size: 13px;
+  }
+  .quote-block img {
+    width: 90px;
+    margin-top: 8px;
+  }
+
+  .post-photo {
+    margin-top: 8px;
+  }
+  .post-photo img {
+    width: 130px;
+    border: 1px solid #333;
+    display: block;
+  }
+
+  .comment-block {
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    padding: 8px 10px;
+    margin-top: 6px;
+    display: flex;
+    gap: 8px;
+  }
+  .comment-block img {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .comment-block .cname {
+    font-weight: bold;
+    color: #cfcfcf;
+  }
+  .comment-block .ctime {
+    color: #777;
+    font-weight: normal;
+    font-size: 11px;
+  }
+  .comment-block .ctext {
+    color: #c5c5c5;
+    margin-top: 2px;
+  }
+
+  /* ===== adz ===== */
+  .sidebar-right {
+    width: 240px;
+    flex-shrink: 0;
+  }
+  .ad-block {
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    margin-bottom: 16px;
+    padding: 10px;
+  }
+  .ad-block .ad-label {
+    color: #777;
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+  .ad-block h3 {
+    font-size: 13px;
+    color: #9fc2e8;
+    margin: 0 0 8px 0;
+  }
+  .ad-block img {
+    width: 100%;
+    display: block;
+    margin-bottom: 8px;
+    border: 1px solid #333;
+  }
+  .ad-block p {
+    font-size: 11px;
+    color: #999;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ===== mobile compat ===== */
+  @media (max-width: 900px) {
+    .container {
+      flex-direction: column;
+      padding: 12px;
+      gap: 14px;
+    }
+    .sidebar-left,
+    .feed,
+    .sidebar-right {
+      width: 100%;
+      min-width: 0;
+      max-width: none;
+    }
+    .profile-pic-wrap {
+      width: 160px;
+      margin: 0 auto 14px auto;
+    }
+    .profile-pic {
+      width: 160px;
+      height: 160px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    body { font-size: 13px; }
+
+    header {
+      flex-wrap: wrap;
+      padding: 8px 10px;
+      gap: 8px;
+    }
+    .header-left {
+      width: 100%;
+      justify-content: space-between;
+    }
+    .logo { font-size: 20px; margin-right: 0; }
+    .nav-links { gap: 12px; }
+    .nav-links a { font-size: 12px; }
+    .header-right {
+      width: 100%;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .search-box input { width: 90px; }
+
+    .page-title { padding: 10px 12px 8px 12px; }
+    .page-title h1 { font-size: 17px; display: block; }
+    .page-title .status { display: block; font-size: 13px; }
+
+    .tabs { padding: 0 12px; overflow-x: auto; }
+    .tabs a { padding: 7px 10px; font-size: 12px; }
+
+    .container { padding: 10px; }
+
+    .profile-pic-wrap { width: 130px; }
+    .profile-pic { width: 130px; height: 130px; }
+
+    .toolbar {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .toolbar span { font-size: 11px; }
+
+    .mutual-friends-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .post { flex-direction: row; }
+    .post-photo img { width: 100px; }
+
+    .comment-block { flex-direction: row; }
+    .comment-block img { width: 28px; height: 28px; }
+
+    .filter-bar {
+      font-size: 11px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px;
+    }
+    .filter-bar a, .filter-bar span { margin: 2px 4px; }
+  }
+
+  @media (max-width: 400px) {
+    .logo { font-size: 18px; }
+    .nav-links { gap: 8px; }
+    .nav-links a { font-size: 11px; }
+    .search-box input { width: 70px; }
+    .profile-pic-wrap, .profile-pic { width: 110px; height: 110px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="logo">facebook</div>
+    <nav class="nav-links">
+      <a href="#" class="active">Home</a>
+      <a href="#">Profile</a>
+      <a href="https://tepa.wtf/friends">Friends</a>
+      <a href="#">Inbox</a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <a href="#">Tepa</a>
+    <a href="#">Settings</a>
+    <a href="https://facebook.com">Logout</a>
+    <div class="search-box">
+      <input type="text" placeholder="Search">
+      <button>🔍</button>
+    </div>
+  </div>
+</header>
+
+<div class="page-title">
+  <h1>@tepawtf</h1>
+  <span class="status">is catching up.</span>
+  <span class="status-date">3 hours ago</span>
+</div>
+
+<div class="tabs">
+  <a href="#" class="active">Wall</a>
+  <a href="#">Info</a>
+  <a href="#">Photos</a>
+  <a href="#">Boxes</a>
+</div>
+
+<div class="container">
+
+  <!-- leftb ar -->
+  <div class="sidebar-left">
+    <div class="profile-pic-wrap">
+      <img class="profile-pic" src="https://i.ibb.co/Z62RSpb8/dasdasdasd.png" alt="Profile Photo">
+    </div>
+
+    <div class="sidebar-links">
+      <a href="https://instagram.com/tepawtf">View Tepa's Instagram</a>
+      <a href="#">View Media of Tepa (0)</a>
+      <a href="https://instagram.com/tepawtf">Send Tepa a Message</a>
+      <a href="#">Poke Tepa</a>
+    </div>
+
+    <div class="status-box">
+17 year old producer check me out Heh
+    </div>
+
+    <div class="box">
+      <div class="box-title">Information</div>
+      <div class="box-content">
+        <div class="label">Networks:</div>
+        <div class="value">Surpisingly enough<br>The information section<br>Doesnt have much info in it LOL</div>
+        <div class="label">Birthday:</div>
+        <div class="value">March 13, 2009</div>
+        <div class="label">Current City:</div>
+        <div class="value">Nope</div>
+        <div class="label">Hometown:</div>
+        <div class="value">Somewhere</div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="box-title">Friends</div>
+      <div class="box-content" style="padding-bottom:0;">
+        <a href="#">3 friends in common</a> — <a href="#">See All</a>
+      </div>
+      <div class="mutual-friends-grid">
+        <div>
+          <img src="https://scontent-iad3-1.cdninstagram.com/v/t51.82787-19/625419145_17988313490927171_6979556829711211822_n.jpg?_nc_cat=110&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4xMDgwLkMzIn0%3D&_nc_ohc=kxBgObfZOecQ7kNvwGA56R5&_nc_oc=AdocglGMdVw5yYuYk3PmLJQ3mI6NJpJ92VVpgJ5Xek9Nqh8wOZLGPmnDJNDW_Hp3JTc&_nc_zt=24&_nc_ht=scontent-iad3-1.cdninstagram.com&_nc_gid=PANRYs3ywLm6TNSbI80OCQ&_nc_ss=7b6a8&oh=00_AQCXThCjQ_7p5gSHEPTNEwy_61wUpQed9OUUlxXDB4QE0w&oe=6A5EBF8F" alt="friend">
+          <div class="fname">3qrb</div>
+        </div>
+        <div>
+          <img src="https://scontent-iad3-2.cdninstagram.com/v/t51.82787-19/731423248_18089623469632673_9116569177859480129_n.jpg?_nc_cat=111&ccb=7-5&_nc_sid=bf7eb4&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLnd3dy4zNTkuQzMifQ%3D%3D&_nc_ohc=vdp3ThETLU4Q7kNvwHAYKW2&_nc_oc=AdqrwbyWevTTTAKbd7s5VK5uI9HQhBi_Ef3NXAiWoHVGFyAjEWdEdU8CmQJh9YGteus&_nc_zt=24&_nc_ht=scontent-iad3-2.cdninstagram.com&_nc_gid=n3m6pLVz_JABEIPwzT_9OQ&_nc_ss=7b6a8&oh=00_AQA2yKvIvMBku4gvp1ZyQVvwBXvZUv6xpQHkdnqcWAr_yg&oe=6A5EB4BF" alt="friend">
+          <div class="fname">fuckaeter</div>
+        </div>
+        <div>
+          <img src="https://i.ibb.co/wNm4Wr4p/729211928-18082925477646579-5948934149893223965-n.jpg" alt="friend">
+          <div class="fname">morgue</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- feed -->
+  <div class="feed">
+    <div class="toolbar">
+      <span class="write-active">Message</span>
+      <span>Copy Link</span>
+      <span>Edit</span>
+      <span>Go Live</span>
+      <span>Followers</span>
+      <span>▾</span>
+    </div>
+    <div class="write-box">
+      <textarea placeholder="Write something..."></textarea>
+      <div class="post-btn"><button>Post</button></div>
+    </div>
+
+    <div class="filter-bar">
+      <span class="active">All Posts</span>
+      <a href="#">Posts by @tepawtf</a>
+      <a href="#">Posts by Others</a>
+      <a href="#">Wall</a>
+    </div>
+
+    <div class="day-label">Yesterday</div>
+
+    <div class="post">
+      <div class="post-icon">💞</div>
+      <div class="post-body">
+        <div class="post-text">Tepa has just created <a href="https://video.twimg.com/tweet_video/HM4yKaNWcAAQBm4.mp4">this website</a> on 7/16/2026. <span class="post-time">9:59am</span></div>
+        <div class="quote-block">
+          <div class="quote-text">"Click the link i dare you"</div>
+          <img src="https://i.ibb.co/0yCyQBD8/IMG-7784.jpg" alt="gift">
+        </div>
+        <div class="post-actions">
+          <a href="#">Add Comment</a> – <a href="#">Like</a> – hi
+        </div>
+      </div>
+    </div>
+
+    <div class="post">
+      <div class="post-icon">‼️</div>
+      <div class="post-body">
+        <div class="post-text">Tepa has dropped a new <a href="https://soundcloud.com/tepawtf">track</a> on SoundCloud. <span class="post-time">6:37pm</span> – <a href="#">Comment</a> – <a href="#">Like</a></div>
+      </div>
+    </div>
+
+    <div class="post">
+      <div class="post-icon">💬</div>
+      <div class="post-body">
+        <div class="post-text">Tepa commented on <a href="https://soundcloud.com/aeter">aeter</a>'s <a href="https://soundcloud.com/aeter/sets/infrared">album</a>. <span class="post-time">6:18pm</span></div>
+        <div class="post-photo">
+          <img src="https://i1.sndcdn.com/artworks-0qdchyx21ZQ12Zkx-rbZHDw-t1080x1080.jpg" alt="photo">
+        </div>
+        <div style="margin-top:6px;" class="quote-text">"track 6 and 8 prod me i love my goat"</div>
+      </div>
+    </div>
+
+    <div class="post">
+      <div class="post-icon">👤</div>
+      <div class="post-body">
+        <div class="post-text bold-title">tepawtf is catching up. <span class="post-time" style="font-weight:normal;">5:50pm</span> – <a href="#">Comment</a> – <a href="#">Like</a></div>
+      </div>
+    </div>
+
+    <div class="post">
+      <div class="post-icon">👥</div>
+      <div class="post-body">
+        <div class="post-text">Tepa is celebrating a 12 year friendship anniversary with <a href="https://instagram.com/3qrb.wav">@3qrb.wav</a>. <span class="post-time">4:55pm</span> – <a href="#">Comment</a> – <a href="#">Like</a></div>
+      </div>
+    </div>
+
+    <div class="post">
+      <div class="post-icon">😐</div>
+      <div class="post-body">
+        <div class="post-text bold-title">Tepa is feeling neutral. <span class="post-time" style="font-weight:normal;">10:55am</span> – <a href="#">Comment</a> – <a href="#">Like</a></div>
+      </div>
+    </div>
+
+    <div class="day-label">July 15th</div>
+
+    <div class="post">
+      <div class="post-icon">></div>
+      <div class="post-body">
+        <div class="comment-block">
+          <img src="https://i.ibb.co/B2cTk9SZ/image.png" alt="commenter">
+          <div>
+            <div class="cname">junkieladder47 wrote <span class="ctime">at 1:57pm</span></div>
+            <div class="ctext">die</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ads -->
+  <div class="sidebar-right">
+    <div style="color:#777; font-size:11px; margin-bottom:6px;">Advertisements</div>
+
+    <div class="ad-block">
+      <div class="ad-label">Sponsored</div>
+      <h3 href="https://soundcloud.com/tepawtf">Follow My Soundcloud</h3>
+      <img src="https://i.ibb.co/R4TkCbLd/image.png" alt="ad">
+      <p>either im gonna b hosting songs that i produced on here (those r the only songs ill host) or i will post beats here</p>
+    </div>
+
+    <div class="ad-block">
+      <div class="ad-label">Sponsored</div>
+      <h3>iromokikih & morgue - submissive sandwich</h3>
+      <img src="https://i1.sndcdn.com/artworks-saFFWYsLKIpHy57R-aNNy0Q-t1080x1080.jpg" alt="ad">
+      <p>i know thsi shit released 2 months ago but aye Mess wit it anyway :D</p>
+    </div>
+
+    <div class="ad-block">
+      <div class="ad-label">Sponsored</div>
+      <h3>My Friends</h3>
+      <img src="https://i.ibb.co/rJP9K0w/image.png" alt="ad">
+      <p>check out my friends and their works | https://tepa.wtf/friends</p>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
